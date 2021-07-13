@@ -14,9 +14,14 @@ object WordCount {
     val sc = new SparkContext(conf)
 
     val lines = sc.textFile("in/word_count.text")
+    println("lines:")
+    lines.foreach(line => println(line))
     val words = lines.flatMap(line => line.split(" "))
-
+    println("words")
+    words.foreach(word => println(word))
     val wordCounts = words.countByValue()
+    println("wordCount")
+    wordCounts.foreach(x => println(x))
     for ((word, count) <- wordCounts) println(word + " : " + count)
   }
 }

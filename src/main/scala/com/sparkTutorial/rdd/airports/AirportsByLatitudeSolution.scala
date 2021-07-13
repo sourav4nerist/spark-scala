@@ -18,6 +18,6 @@ object AirportsByLatitudeSolution {
       splits(1) + ", " + splits(6)
     })
 
-    airportsNameAndCityNames.saveAsTextFile("out/airports_by_latitude.text")
+    airportsNameAndCityNames.saveAsTextFile("out/existingCode/airports_by_latitude.text")
   }
 }

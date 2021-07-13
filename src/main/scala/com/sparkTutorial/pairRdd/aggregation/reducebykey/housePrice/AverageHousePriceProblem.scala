@@ -1,5 +1,8 @@
 package com.sparkTutorial.pairRdd.aggregation.reducebykey.housePrice
 
+import org.apache.log4j.{Level, Logger}
+import org.apache.spark.{SparkConf, SparkContext}
+
 object AverageHousePriceProblem {
 
   def main(args: Array[String]) {
@@ -33,6 +36,20 @@ object AverageHousePriceProblem {
 
        3, 1 and 2 mean the number of bedrooms. 325000 means the average price of houses with 3 bedrooms is 325000.
      */
+    Logger.getLogger("org").setLevel(Level.ERROR)
+    val conf = new SparkConf().setAppName("real state").setMaster("local[2]")
+    val sc = new SparkContext(conf)
+    val data = sc.textFile("in/RealEstate.csv")
+    val filteredData = data.filter(line => !line.contains("Size"))
+    val groupedData = filteredData.map(line => (line.split(",")(3), (1,line.split(",")(2).toDouble)))
+    val sumPerBedroom = groupedData.reduceByKey((x,y) => (x._1+y._1, x._2 + y._2))
+    println("Bedroom total")
+    for((bedRoom,total)<- sumPerBedroom.collect()) println(bedRoom +":"+total)
+
+    val avgPerBedroom = sumPerBedroom.mapValues(total => total._2/total._1)
+    println("Bedroom avg")
+    for ((bedroom, avg) <- avgPerBedroom.collect()) println(bedroom + ":" + avg)
+
   }
 
 }

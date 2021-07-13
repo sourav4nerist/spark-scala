@@ -1,5 +1,8 @@
 package com.sparkTutorial.pairRdd.filter
 
+import com.sparkTutorial.commons.Utils
+import org.apache.spark.{SparkConf, SparkContext}
+
 object AirportsNotInUsaProblem {
 
   def main(args: Array[String]) {
@@ -18,5 +21,12 @@ object AirportsNotInUsaProblem {
        ("Wewak Intl", "Papua New Guinea")
        ...
      */
+
+    val conf = new SparkConf().setAppName("filter pair RDD").setMaster("local")
+    val sc = new SparkContext(conf)
+    val fileRDD = sc.textFile("in/airports.text")
+    val airportTuple = fileRDD.map(str => (str.split(Utils.COMMA_DELIMITER)(1),str.split(Utils.COMMA_DELIMITER)(3)))
+    val filteredAirTuple = airportTuple.filter(!_._2.equals("\"United States\""))
+    filteredAirTuple.saveAsTextFile("out/practice/airports_not_in_usa_pair_rdd.text")
   }
 }

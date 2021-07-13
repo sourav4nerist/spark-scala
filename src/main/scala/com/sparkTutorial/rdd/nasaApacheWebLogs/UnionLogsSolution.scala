@@ -14,12 +14,12 @@ object UnionLogsSolution {
     val augustFirstLogs = sc.textFile("in/nasa_19950801.tsv")
 
     val aggregatedLogLines = julyFirstLogs.union(augustFirstLogs)
-
+    println(aggregatedLogLines.count())
     val cleanLogLines = aggregatedLogLines.filter(line => isNotHeader(line))
-
+    println(cleanLogLines.count())
     val sample = cleanLogLines.sample(withReplacement = true, fraction = 0.1)
 
-    sample.saveAsTextFile("out/sample_nasa_logs.csv")
+    sample.saveAsTextFile("out/existingCode/sample_nasa_logs.csv")
   }
 
   def isNotHeader(line: String): Boolean = !(line.startsWith("host") && line.contains("bytes"))

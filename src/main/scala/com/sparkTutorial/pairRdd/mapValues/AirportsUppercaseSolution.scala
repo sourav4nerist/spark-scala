@@ -17,6 +17,6 @@ object AirportsUppercaseSolution {
 
     val upperCase = airportPairRDD.mapValues(countryName => countryName.toUpperCase)
 
-    upperCase.saveAsTextFile("out/airports_uppercase.text")
+    upperCase.saveAsTextFile("out/existingCode/airports_uppercase.text")
   }
 }
